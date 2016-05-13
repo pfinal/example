@@ -54,7 +54,6 @@ class DBConnection
      */
     public function query($sql, $params = array(), $fetchStyle = PDO::FETCH_ASSOC)
     {
-
         $sql = $this->quoteSql($sql);
 
         $statement = $this->getPdo()->prepare($sql);
