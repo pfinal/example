@@ -3,11 +3,12 @@
 namespace Database;
 
 /**
- * 模型
+ * 数据库操作模型类
+ * @author 邹义良
  */
 class Model
 {
-    protected $db;
+    protected static $connection;
 
     protected $table;
     protected $field;
@@ -19,18 +20,16 @@ class Model
 
     const PARAM_PREFIX = ':_db_prefix_';
 
-    public function __construct($table = null)
+    public function __construct($table)
     {
-        if (!self::isEmpty($table)) {
-            if (strpos($table, '{{') === false) {
-                $table = '{{%' . $table . '}}';
-            }
-            if (!preg_match('/^\\{\\{%?[\\.\w]+%?\\}\\}$/', $table)) {
-                throw new \Exception('Table name error:' . $table);
-            }
-
-            $this->table = $table;
+        if (strpos($table, '{{') === false) {
+            $table = '{{%' . $table . '}}';
         }
+        if (!preg_match('/^\\{\\{%?[\\.\w]+%?\\}\\}$/', $table)) {
+            throw new \Exception('Table name error:' . $table);
+        }
+
+        $this->table = $table;
     }
 
     /**
@@ -48,22 +47,22 @@ class Model
 
     public function setConnection(Connection $connection)
     {
-        $this->connection = $connection;
+        self::$connection = $connection;
         return $this;
     }
 
     /**
      * @return Connection
      */
-    public function getConnection()
+    public static function getConnection($config = null)
     {
         global $dbConfig;
 
-        if ($this->db instanceof Connection) {
-            return $this->db;
+        if (self::$connection instanceof Connection) {
+            return self::$connection;
         }
-        $this->db = new Connection($dbConfig);
-        return $this->db;
+        self::$connection = new Connection($config ? $config : $dbConfig);
+        return self::$connection;
     }
 
     /**
@@ -249,6 +248,15 @@ class Model
             return self::getConnection()->queryScalar($sql, $params);
         }
 
+        if (method_exists(self::getConnection(), $method)) {
+            return call_user_func_array([self::getConnection(), $method], $arguments);
+        }
+
+        throw new \Exception('Call to undefined method ' . __CLASS__ . '::' . $method . '()');
+    }
+
+    public static function  __callStatic($method, $arguments)
+    {
         if (method_exists(self::getConnection(), $method)) {
             return call_user_func_array([self::getConnection(), $method], $arguments);
         }

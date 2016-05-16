@@ -11,6 +11,7 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8;
 */
 
+
 require_once './Database/Connection.php';
 require_once './Database/Model.php';
 
@@ -65,7 +66,8 @@ var_dump($model->find(3));
 
 //执行原生sql
 $sql = 'SELECT * FROM {{%user}} WHERE id=?';
-$list = $model->query($sql, array(2));
+//$list = $model->query($sql, array(2));
+$list = \Database\Model::query($sql, array(2));
 var_dump($list);
 
 
