@@ -16,7 +16,7 @@ require_once './Database/Connection.php';
 require_once './Database/Model.php';
 
 
-$dbConfig = array(
+$dbConnectionConfig = array(
     'dsn' => 'mysql:host=localhost;dbname=test',
     'username' => 'root',
     'password' => 'root',
@@ -26,7 +26,7 @@ $dbConfig = array(
 
 $model = new \Database\Model('user');
 
-
+/*
 $model->delete();
 for ($i = 1; $i <= 10; $i++) {
     $data = array(
@@ -41,7 +41,7 @@ for ($i = 1; $i <= 10; $i++) {
 $model->delete(10);
 var_dump($model->count());
 var_dump($model->avg('id'));
-
+*/
 
 //var_dump($model->where(['id'=>8])->delete());exit;
 
@@ -70,5 +70,8 @@ $sql = 'SELECT * FROM {{%user}} WHERE id=?';
 $list = \Database\Model::query($sql, array(2));
 var_dump($list);
 
+var_dump(\Database\Model::table('user')->find(4));
+
+var_dump(\Database\Model::table('user')->where(9)->increment('updated_at', 1));
 
 var_dump($model->getConnection()->getQueryLog());

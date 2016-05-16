@@ -56,12 +56,12 @@ class Model
      */
     public static function getConnection($config = null)
     {
-        global $dbConfig;
+        global $dbConnectionConfig;
 
         if (self::$connection instanceof Connection) {
             return self::$connection;
         }
-        self::$connection = new Connection($config ? $config : $dbConfig);
+        self::$connection = new Connection($config ? $config : $dbConnectionConfig);
         return self::$connection;
     }
 
@@ -150,6 +150,27 @@ class Model
         $sql = $this->replacePlaceholder($sql);
 
         $rowCount = self::getConnection()->execute($sql, $this->params);
+
+        $this->reset();
+
+        return $rowCount;
+    }
+
+    /**
+     * 自增
+     * @param $field
+     * @param int $value
+     * @return int
+     */
+    public function increment($field, $value = 1)
+    {
+        $sql = 'UPDATE ' . $this->table
+            . " SET [[$field]] = [[$field]] + ?"
+            . (self::isEmpty($this->condition) ? '' : " WHERE {$this->condition}");
+
+        $sql = $this->replacePlaceholder($sql);
+
+        $rowCount = self::getConnection()->execute($sql, array_merge(array($value), $this->params));
 
         $this->reset();
 
@@ -248,11 +269,7 @@ class Model
             return self::getConnection()->queryScalar($sql, $params);
         }
 
-        if (method_exists(self::getConnection(), $method)) {
-            return call_user_func_array([self::getConnection(), $method], $arguments);
-        }
-
-        throw new \Exception('Call to undefined method ' . __CLASS__ . '::' . $method . '()');
+        return self::__callStatic($method, $arguments);
     }
 
     public static function  __callStatic($method, $arguments)
