@@ -8,10 +8,11 @@ use PDO;
  * 数据库连接帮助类
  * @author 邹义良
  */
-class DBConnection
+class Connection
 {
     protected $pdo;
     protected $transactions = 0;
+    protected $queryLogs = array();
     protected $config = array(
         'dsn' => 'mysql:host=localhost;dbname=test',
         'username' => 'root',
@@ -36,6 +37,7 @@ class DBConnection
     public function execute($sql, $params = array())
     {
         $sql = $this->quoteSql($sql);
+        $this->queryLogs[] = $sql;
         $statement = $this->getPdo()->prepare($sql);
 
         if ($statement->execute($params)) {
@@ -55,6 +57,7 @@ class DBConnection
     public function query($sql, $params = array(), $fetchStyle = PDO::FETCH_ASSOC)
     {
         $sql = $this->quoteSql($sql);
+        $this->queryLogs[] = $sql;
 
         $statement = $this->getPdo()->prepare($sql);
         $statement->execute($params);
@@ -81,6 +84,8 @@ class DBConnection
     public function queryScalar($sql, $params = array())
     {
         $sql = $this->quoteSql($sql);
+        $this->queryLogs[] = $sql;
+
         $statement = $this->getPdo()->prepare($sql);
         if ($statement->execute($params) && ($data = $statement->fetch(PDO::FETCH_NUM)) !== false) {
             if (is_array($data) && isset($data[0])) {
@@ -98,6 +103,11 @@ class DBConnection
     public function getLastInsertId($sequence = null)
     {
         return $this->getPdo()->lastInsertId($sequence);
+    }
+
+    public function getQueryLog()
+    {
+        return $this->queryLogs;
     }
 
     /**

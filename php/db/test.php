@@ -11,9 +11,9 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=UTF8;
 */
 
-require_once './Database/DBConnection.php';
+require_once './Database/Connection.php';
 
-$config = array(
+$dbConfig = array(
     'dsn' => 'mysql:host=localhost;dbname=test',
     'username' => 'root',
     'password' => 'root',
@@ -22,7 +22,7 @@ $config = array(
 );
 
 // 实例化对象
-$db = new Database\DBConnection($config);
+$db = new Database\Connection($dbConfig);
 
 // 新增用户
 $sql = 'INSERT INTO `user` (username, password, created_at, updated_at) VALUES (:username, :password, :created_at, :updated_at)';

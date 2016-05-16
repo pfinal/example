@@ -7,7 +7,6 @@
 
 include_once __DIR__ . '/autoload.php';
 
-
 //$controller = new \Controller\UserController();
 //$controller->index();
 

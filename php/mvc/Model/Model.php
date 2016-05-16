@@ -4,8 +4,11 @@ namespace Model;
 
 class Model
 {
-    protected $pdo;
-    public function __construct($tableName){
-        //连数据库
+    public function select()
+    {
+        return array(
+            array('id' => 1, 'username' => 'Jack'),
+            array('id' => 2, 'username' => 'Lily'),
+        );
     }
 }
