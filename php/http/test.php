@@ -3,7 +3,7 @@
 include_once __DIR__ . '/Client.php';
 include_once __DIR__ . '/Response.php';
 
-$client = new \Rain\Http\Client();
+$client = new \Myzheng\Http\Client();
 
 $response = $client->get('http://www.baidu.com');
 
