@@ -247,7 +247,7 @@ class Model
     /**
      * 统计查询 COUNT、SUM、MAX、 MIN、AVG
      * @param $method
-     * @param $params
+     * @param $arguments
      * @return mixed
      * @throws \Exception
      */
