@@ -15,7 +15,7 @@ class Client
      */
     public function get($url)
     {
-        return self::exec($url, 'get');
+        return self::exec($url, 'GET');
     }
 
     /**
@@ -48,7 +48,7 @@ class Client
             $postData[$field] = '@' . $filename;
         }
 
-        return self::exec($url, 'post', $postData);
+        return self::exec($url, 'POST', $postData);
     }
 
     /**
@@ -76,7 +76,7 @@ class Client
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 
-        if (strtolower($method) === 'post') {
+        if (strtoupper($method) === 'POST') {
             curl_setopt($ch, CURLOPT_POST, true);
             if ($postData !== null) {
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
