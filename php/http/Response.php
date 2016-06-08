@@ -9,7 +9,7 @@ namespace Rain\Http;
 class Response
 {
     public $body;
-    public $transferStats;
+    public $transferInfo;
     public $header;
 
     public function __construct(array $data)
@@ -25,7 +25,7 @@ class Response
      */
     public function getStatusCode()
     {
-        return (int)$this->transferStats['http_code'];
+        return isset($this->transferInfo['http_code']) ? $this->transferInfo['http_code'] : 0;
     }
 
     /**
@@ -44,5 +44,14 @@ class Response
     public function getHeaderRaw()
     {
         return (string)$this->header;
+    }
+
+    /**
+     * 传输状态信息
+     * @return array
+     */
+    public function getTransferInfo()
+    {
+        return (array)$this->transferInfo;
     }
 }

@@ -89,7 +89,7 @@ class Client
 
         $response = curl_exec($ch);
 
-        $transferStats = array(
+        $transferInfo = array(
                 'errno' => curl_errno($ch),
                 'error' => curl_error($ch),
             ) + curl_getinfo($ch);
@@ -97,9 +97,9 @@ class Client
         curl_close($ch);
 
         return new Response(array(
-            'transferStats' => $transferStats,
-            'header' => substr($response, 0, $transferStats['header_size']),
-            'body' => substr($response, $transferStats['header_size']),
+            'transferInfo' => $transferInfo,
+            'header' => substr($response, 0, $transferInfo['header_size']),
+            'body' => substr($response, $transferInfo['header_size']),
         ));
     }
 }
