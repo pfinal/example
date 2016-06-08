@@ -8,9 +8,9 @@ namespace Rain\Http;
  */
 class Response
 {
-    public $body;
     public $transferInfo;
     public $header;
+    public $body;
 
     public function __construct(array $data)
     {
