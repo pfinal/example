@@ -15,7 +15,7 @@ class Client
      */
     public function get($url)
     {
-        return self::exec($url, 'GET');
+        return self::request('GET', $url);
     }
 
     /**
@@ -26,7 +26,7 @@ class Client
      */
     public function post($url, $postData)
     {
-        return self::exec($url, 'POST', $postData);
+        return self::request('POST', $url, $postData);
     }
 
     /**
@@ -48,7 +48,7 @@ class Client
             $postData[$field] = '@' . $filename;
         }
 
-        return self::exec($url, 'POST', $postData);
+        return self::request('POST', $url, $postData);
     }
 
     /**
@@ -64,7 +64,7 @@ class Client
      * @param array $options 用于提供给curl_setopt_array的参数
      * @return Response
      */
-    public static function exec($url, $method, $postData = null, $options = array())
+    public function request($method, $url, $postData = null, $options = array())
     {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
