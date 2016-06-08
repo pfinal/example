@@ -62,6 +62,13 @@ class Client
      *      从 PHP 5.2.0 开始，使用 @ 前缀传递文件时，value 必须是个数组。
      *      从 PHP 5.5.0 开始, @ 前缀已被废弃，文件可通过 \CURLFile 发送。
      * @param array $options 用于提供给curl_setopt_array的参数
+     * 例如:
+     *  [
+     *      CURLOPT_HTTPHEADER => [
+     *          'Content-Type: application/json',
+     *          //'Content-Type: application/x-www-form-urlencoded',
+     *      ]
+     *  ]
      * @return Response
      */
     public function request($method, $url, $postData = null, $options = array())
