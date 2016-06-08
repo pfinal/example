@@ -15,7 +15,7 @@ class Client
      */
     public function get($url)
     {
-        return self::request('GET', $url);
+        return $this->request('GET', $url);
     }
 
     /**
@@ -26,7 +26,7 @@ class Client
      */
     public function post($url, $postData)
     {
-        return self::request('POST', $url, $postData);
+        return $this->request('POST', $url, $postData);
     }
 
     /**
@@ -37,7 +37,7 @@ class Client
      * @param array|string $postData
      * @return Response
      */
-    public static function file($url, $field, $filename, $postData = array())
+    public function file($url, $field, $filename, $postData = array())
     {
         $filename = realpath($filename);
 
@@ -48,7 +48,7 @@ class Client
             $postData[$field] = '@' . $filename;
         }
 
-        return self::request('POST', $url, $postData);
+        return $this->request('POST', $url, $postData);
     }
 
     /**
