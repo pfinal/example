@@ -9,7 +9,8 @@ $response = $client->get('http://www.baidu.com');
 
 var_dump($response->getStatusCode());
 
+var_dump($response->getTransferInfo());
+
 var_dump($response->getHeaderRaw());
 
 var_dump($response->getBody());
-
